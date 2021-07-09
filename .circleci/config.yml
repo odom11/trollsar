@@ -1,0 +1,90 @@
+version: 2.1
+
+# Define the jobs we want to run for this project
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004-cuda-11.4:202110-01
+    steps:
+      - checkout
+      - when:
+          condition:
+            or:
+              - equal: [ develop, << pipeline.git.branch >> ]
+              - equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: install clang 13
+                command: |
+                  wget -O - https://apt.llvm.org/llvm.sh > llvm.sh
+                  chmod +x llvm.sh
+                  sudo ./llvm.sh 13 all
+            - run:
+                name: install cmake
+                command: |
+                  sudo apt remove --purge --auto-remove cmake
+                  wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+                  sudo apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main"
+                  sudo apt update
+                  sudo apt install cmake
+            - run:
+                name: install optix dependencies
+                command: |
+                  sudo apt update
+                  sudo apt install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev
+            - run:
+                name: install trollsar dependencies
+                command: |
+                  sudo pip3 install --upgrade --no-input pip
+                  sudo pip3 install --no-input conan
+            - run:
+                name: build optix
+                command: |
+                  ls
+                  cd external/optix/7.5/SDK
+                  mkdir build
+                  cd build
+                  cmake ..
+                  make -j 12
+            - run:
+                name: build trollsar
+                command: |
+                  mkdir build
+                  cd build
+                  conan install .. -r conancenter --build=missing --profile ../config/conan/profiles/clang13
+                  cmake .. -DCMAKE_CXX_COMPILER=clang++-13 -DCMAKE_C_COMPILER=clang-13
+                  make -j 16
+            - run:
+                name: run tests
+                command: |
+                  ctest --test-dir build --output-junit results.xml
+                  #            - persist_to_workspace:
+                  #                root: .
+                  #                paths:
+                  #                  - build
+                  #  test:
+                  #    machine:
+                  #      image: ubuntu-2004-cuda-11.4:202110-01
+                  #    steps:
+                  #      - when:
+                  #          condition:
+                  #            or:
+                  #              - equal: [ develop, << pipeline.git.branch >> ]
+                  #              - equal: [ master, << pipeline.git.branch >> ]
+                  #          steps:
+                  #            - attach_workspace:
+                  #                at: .
+                  #            - run:
+                  #                name: run tests
+                  #                command: |
+                  #                  echo `pwd`
+                  #                  echo `ls`
+                  #                  ctest --test-dir build ---output-junit results.xml
+                  #
+                  #workflows:
+                  #  setup_build_test:
+                  #    jobs:
+                  #      - build
+                  #      - test:
+                  #          requires:
+                  #            - build

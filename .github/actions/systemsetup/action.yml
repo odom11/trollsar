@@ -1,0 +1,21 @@
+name: 'system setup'
+description: 'setup machine'
+runs:
+  using: 'composite'
+  steps:
+    - name: update
+      shell: bash
+      run: sudo apt update && sudo apt upgrade
+  
+    - name: build tools
+      shell: bash
+      run: |
+        sudo apt install -y gcovr
+        sudo pip3 install --no-input --upgrade pip 
+        sudo pip3 install --no-input conan 
+        wget -O - https://apt.llvm.org/llvm.sh > llvm.sh
+        pwd
+        ls
+        chmod +x llvm.sh
+        pwd
+        sudo ./llvm.sh 13 all
