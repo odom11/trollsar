@@ -112,3 +112,6 @@ fabric.properties
 
 # Test output
 Testing/
+
+optix/7.3/SDK/build/
+optix/7.3/doc/

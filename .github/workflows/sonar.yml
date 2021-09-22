@@ -36,16 +36,37 @@ jobs:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
     steps:
 
-      - name: setup dependencies
+      - name: install trollsar dependencies
         run: sudo apt install libboost-all-dev
 
-      - uses: actions/checkout@v2
+
+      - name: checkout repository
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: install cuda
+        uses: Jimver/cuda-toolkit@v0.2.4
+        id: cuda-toolkit
+        with:
+          cuda: '11.2.2'
+
+      - name: install optix dependencies
+        run: sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev 
+
+      - name: build optix
+        run: |
+          cd optix/7.3/SDK/
+          mkdir build
+          cd build
+          cmake .. -DCUDA_CUDA_LIBRARY=${{steps.cuda-toolkit.outputs.CUDA_PATH}}/lib64/stubs
+          make -j 12
+
       - name: set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
       - name: download and set up sonar-scanner
         env:
           SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
