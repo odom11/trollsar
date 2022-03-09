@@ -31,6 +31,9 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
+      - name: update
+        run: sudo apt update && sudo apt upgrade
+
       - name: install trollsar dependencies
         run: sudo apt install libboost-all-dev
 

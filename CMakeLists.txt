@@ -19,7 +19,7 @@ include_directories(
         include/
 )
 
-add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp include/view/initializeOptix.h)
+add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp src/arithmetic/simpleAdd.cpp)
 
 target_link_libraries(trollsar.exe
         ${CUDA_LIBRARIES})
