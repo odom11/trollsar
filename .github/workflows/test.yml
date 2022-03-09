@@ -51,7 +51,7 @@ jobs:
 
       - name: build optix
         run: |
-          cd optix/7.3/SDK/
+          cd optix/7.4/SDK/
           mkdir build
           cd build
           cmake .. -DCUDA_CUDA_LIBRARY=${{steps.cuda-toolkit.outputs.CUDA_PATH}}/lib64/stubs

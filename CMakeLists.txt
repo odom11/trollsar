@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 find_package(CUDA 11.0 REQUIRED)
 
-set(OPTIX_VERSION "7.3")
+set(OPTIX_VERSION "7.4")
 # add optix to module path
 set(OptiX_INSTALL_DIR ${CMAKE_SOURCE_DIR}/optix/${OPTIX_VERSION}/)
 set(CMAKE_MODULE_PATH ${OptiX_INSTALL_DIR}/SDK/CMake)
