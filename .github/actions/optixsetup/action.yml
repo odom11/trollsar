@@ -1,0 +1,21 @@
+name: 'system setup'
+description: 'setup machine'
+inputs:
+  cuda_libdir:
+    description: 'cuda library dir'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: install optix dependencies
+      shell: bash
+      run: sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev 
+  
+    - name: build optix
+      shell: bash
+      run: |
+        cd optix/7.4/SDK/
+        mkdir build
+        cd build
+        cmake .. -DCUDA_CUDA_LIBRARY=$INPUT_CUDA_LIBDIR/lib64/stubs
+        make -j 12

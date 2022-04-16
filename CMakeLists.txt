@@ -26,3 +26,18 @@ target_link_libraries(trollsar.exe
 
 enable_testing()
 add_subdirectory("./test")
+
+add_custom_target(init
+    COMMAND ${CMAKE_MAKE_PROGRAM} clean
+    COMMAND rm -f ${OBJECT_DIR}/*.gcno
+    COMMAND rm -f ${OBJECT_DIR}/*.gcda
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_custom_command(OUTPUT gcovv
+    COMMAND echo "=================== GCOV ===================="
+    #COMMAND gcov -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR}
+    #COMMAND echo "-- Source diretorie: ${CMAKE_SOURCE_DIR}/src/"
+    #COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/gcoverage"
+    #WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcoverage
+)

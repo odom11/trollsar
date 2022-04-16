@@ -13,17 +13,10 @@ jobs:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
     steps:
-      - name: update
-        run: sudo apt update && sudo apt upgrade
+      - uses: actions/checkout@v2
 
-      - name: install trollsar dependencies
-        run: sudo apt install libboost-all-dev
-
-
-      - name: checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: setup
+        uses: ./.github/actions/systemsetup
 
       - name: install cuda
         uses: Jimver/cuda-toolkit@v0.2.4
@@ -31,16 +24,10 @@ jobs:
         with:
           cuda: '11.2.2'
 
-      - name: install optix dependencies
-        run: sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev 
-
-      - name: build optix
-        run: |
-          cd optix/7.4/SDK/
-          mkdir build
-          cd build
-          cmake .. -DCUDA_CUDA_LIBRARY=${{steps.cuda-toolkit.outputs.CUDA_PATH}}/lib64/stubs
-          make -j 12
+      - name: setup
+        uses: ./.github/actions/optixsetup
+        with:
+          cuda_libdir: steps.cuda-toolkit.outputs.CUDA_PATH
 
       - name: set up JDK 11
         uses: actions/setup-java@v1

@@ -1,0 +1,12 @@
+name: 'system setup'
+description: 'setup machine'
+runs:
+  using: 'composite'
+  steps:
+    - name: update
+      shell: bash
+      run: sudo apt update && sudo apt upgrade
+  
+    - name: install trollsar dependencies
+      shell: bash
+      run: sudo apt install libboost-all-dev

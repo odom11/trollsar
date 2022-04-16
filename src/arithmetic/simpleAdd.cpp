@@ -1,3 +1,3 @@
-int addThoseNumbers(int a, int b) {
-    return a - b;
+int simpleAdd(int a, int b) {
+    return a + b;
 }
