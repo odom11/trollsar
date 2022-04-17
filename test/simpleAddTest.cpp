@@ -4,13 +4,13 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/assert.hpp>
 
-int addThoseNumbers(int a, int b);
+int simpleAdd(int a, int b);
 
 BOOST_AUTO_TEST_SUITE(bartestsuite)
     BOOST_AUTO_TEST_CASE(testZero) {
-        BOOST_CHECK_EQUAL(3, addThoseNumbers(3, 0));
+        BOOST_CHECK_EQUAL(3, simpleAdd(3, 0));
     }
     BOOST_AUTO_TEST_CASE(testNonZero) {
-        BOOST_CHECK_EQUAL(3, addThoseNumbers(2, 1));
+        BOOST_CHECK_EQUAL(3, simpleAdd(2, 1));
     }
 BOOST_AUTO_TEST_SUITE_END()
