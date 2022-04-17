@@ -9,4 +9,8 @@ runs:
   
     - name: install trollsar dependencies
       shell: bash
-      run: sudo apt install libboost-all-dev
+      run: sudo apt install -y libboost-all-dev
+
+    - name: build tools
+      shell: bash
+      run: sudo apt install -y gcovr

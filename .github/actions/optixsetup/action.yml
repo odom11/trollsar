@@ -9,7 +9,7 @@ runs:
   steps:
     - name: install optix dependencies
       shell: bash
-      run: sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev 
+      run: sudo apt install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev 
   
     - name: build optix
       shell: bash

@@ -24,20 +24,21 @@ add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp src/arithm
 target_link_libraries(trollsar.exe
         ${CUDA_LIBRARIES})
 
+
+option(ENABLE_COVERAGE "enable coverage" OFF)
+if (ENABLE_COVERAGE) 
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
+    SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
+    SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+    add_custom_target(init
+        COMMAND ${CMAKE_MAKE_PROGRAM} clean
+        COMMAND rm -f ${OBJECT_DIR}/*.gcno
+        COMMAND rm -f ${OBJECT_DIR}/*.gcda
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+# TODO: make this compiler dependent
+endif()
+
 enable_testing()
 add_subdirectory("./test")
-
-add_custom_target(init
-    COMMAND ${CMAKE_MAKE_PROGRAM} clean
-    COMMAND rm -f ${OBJECT_DIR}/*.gcno
-    COMMAND rm -f ${OBJECT_DIR}/*.gcda
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-
-add_custom_command(OUTPUT gcovv
-    COMMAND echo "=================== GCOV ===================="
-    #COMMAND gcov -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR}
-    #COMMAND echo "-- Source diretorie: ${CMAKE_SOURCE_DIR}/src/"
-    #COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/gcoverage"
-    #WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcoverage
-)

@@ -54,9 +54,14 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..
+          cmake .. -DENABLE_COVERAGE=ON
           cd ..
           build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build build
+      - name: run tests
+        run:
+          cd build
+          make test
+          gcovr gcovr  -r .. --sonarqube coverage.xml
       - name: run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
