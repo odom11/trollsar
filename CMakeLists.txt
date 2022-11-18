@@ -22,11 +22,9 @@ include_directories(
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
-add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp src/arithmetic/simpleAdd.cpp)
+#add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp src/arithmetic/simpleAdd.cpp)
 
-target_link_libraries(trollsar.exe
-        ${CUDA_LIBRARIES})
-
+add_subdirectory(src)
 
 option(ENABLE_COVERAGE "enable coverage" OFF)
 if (ENABLE_COVERAGE) 

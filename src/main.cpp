@@ -3,11 +3,17 @@
 //
 
 #include <iostream>
-#include <view/initializeOptix.h>
-int simpleAdd(int a, int b);
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+//int simpleAdd(int a, int b);
 
-int main(int iargc, char *argv[]) {
-    initializeOptix();
-    int foo = simpleAdd(2, 3);
-    std::cout << foo << std::endl;
+int main(int argc, char *argv[]) {
+    
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
+    const QUrl url(u"qrc:/trollsar/view/qml/MainWindow.qml"_qs);
+
+    engine.load(url);
+    return app.exec();
 }
