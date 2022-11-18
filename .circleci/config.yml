@@ -35,6 +35,7 @@ jobs:
             - run:
                 name: install trollsar dependencies
                 command: |
+                  sudo apt install qt6-base-dev
                   sudo pip3 install --upgrade --no-input pip
                   sudo pip3 install --no-input conan
             - run:
