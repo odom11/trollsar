@@ -7,10 +7,15 @@ runs:
       shell: bash
       run: sudo apt update && sudo apt upgrade
   
-    - name: install trollsar dependencies
-      shell: bash
-      run: sudo apt install -y libboost-all-dev
-
     - name: build tools
       shell: bash
-      run: sudo apt install -y gcovr
+      run: |
+        sudo apt install -y gcovr
+        sudo pip3 install --no-input --upgrade pip 
+        sudo pip3 install --no-input conan 
+        wget -O - https://apt.llvm.org/llvm.sh > llvm.sh
+        pwd
+        ls
+        chmod +x llvm.sh
+        pwd
+        sudo ./llvm.sh 13 all

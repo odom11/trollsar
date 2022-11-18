@@ -1,13 +1,13 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.18)
 project(trollsar)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 find_package(CUDA 11.0 REQUIRED)
 
-set(OPTIX_VERSION "7.4")
+set(OPTIX_VERSION "7.5")
 # add optix to module path
-set(OptiX_INSTALL_DIR ${CMAKE_SOURCE_DIR}/optix/${OPTIX_VERSION}/)
+set(OptiX_INSTALL_DIR ${CMAKE_SOURCE_DIR}/external/optix/${OPTIX_VERSION}/)
 set(CMAKE_MODULE_PATH ${OptiX_INSTALL_DIR}/SDK/CMake)
 find_package(OptiX REQUIRED)
 
@@ -18,6 +18,9 @@ include_directories(
         ${OptiX_INSTALL_DIR}/SDK/support
         include/
 )
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp src/arithmetic/simpleAdd.cpp)
 

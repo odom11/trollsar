@@ -34,11 +34,11 @@ jobs:
       - name: update
         run: sudo apt update && sudo apt upgrade
 
-      - name: install trollsar dependencies
-        run: sudo apt install libboost-all-dev
-
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: system setup
+        uses: ./.github/actions/systemsetup
 
       - name: install cuda
         uses: Jimver/cuda-toolkit@v0.2.4
@@ -46,25 +46,18 @@ jobs:
         with:
           cuda: '11.2.2'
       
-      - name: install optix dependencies
-        run: sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev xorg-dev 
+      - name: optix setup
+        uses: ./.github/actions/optixsetup
+        with:
+          cuda_libdir: steps.cuda-toolkit.outputs.CUDA_PATH
 
-      - name: cpuinfo
-        run: cat /proc/cpuinfo 
-
-      - name: build optix
-        run: |
-          cd optix/7.4/SDK/
-          mkdir build
-          cd build
-          cmake .. -DCUDA_CUDA_LIBRARY=${{steps.cuda-toolkit.outputs.CUDA_PATH}}/lib64/stubs
-          make -j 12
 
       - name: build trollsar
         run: |
           mkdir build
           cd build
-          cmake ..
+          conan install .. -r conancenter --build=missing --profile ../config/conan/profiles/clang13
+          cmake .. -DCMAKE_CXX_COMPILER=clang++-13 -DCMAKE_C_COMPILER=clang-13
           make -j 4
 
       - name: run tests

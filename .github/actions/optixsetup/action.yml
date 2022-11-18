@@ -14,7 +14,7 @@ runs:
     - name: build optix
       shell: bash
       run: |
-        cd optix/7.4/SDK/
+        cd external/optix/7.5/SDK/
         mkdir build
         cd build
         cmake .. -DCUDA_CUDA_LIBRARY=$INPUT_CUDA_LIBDIR/lib64/stubs
