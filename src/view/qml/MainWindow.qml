@@ -8,4 +8,5 @@ Window {
         text: "Hello, world!"
         anchors.centerIn: parent
     }
+    FramedImage {anchors.fill: parent}
 }

@@ -16,6 +16,10 @@ set_target_properties(trollsar PROPERTIES
 qt_add_qml_module(trollsar
     URI trollsar
     VERSION 1.0
-    QML_FILES view/qml/MainWindow.qml
+    QML_FILES 
+        view/qml/MainWindow.qml 
+        view/qml/FramedImage.qml
+    RESOURCES
+        view/qml/img/world.png
 )
 
