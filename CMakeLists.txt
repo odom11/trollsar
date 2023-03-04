@@ -3,7 +3,7 @@ project(trollsar)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
-find_package(CUDA 11.0 REQUIRED)
+
 
 set(OPTIX_VERSION "7.5")
 # add optix to module path
@@ -19,12 +19,27 @@ include_directories(
         include/
 )
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
 
-#add_executable(trollsar.exe src/main.cpp src/view/initializeOptix.cpp src/arithmetic/simpleAdd.cpp)
 
+
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/conan_files)
+
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -E env conan install ${CMAKE_SOURCE_DIR} --build=missing -s build_type=Debug -of ${CMAKE_BINARY_DIR}/conan_files
+        COMMAND_ECHO STDOUT
+        OUTPUT_FILE ${CMAKE_BINARY_DIR}/conan_install.log
+        ERROR_FILE ${CMAKE_BINARY_DIR}/conan_install_error.log
+    COMMAND_ERROR_IS_FATAL ANY
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+
+find_package(CUDA 11.0 REQUIRED)
+find_package(Catch2 REQUIRED HINTS ${CMAKE_BINARY_DIR}/conan_files)
+
+add_subdirectory(external/optix/7.5/SDK)
 add_subdirectory(src)
+
 
 option(ENABLE_COVERAGE "enable coverage" OFF)
 if (ENABLE_COVERAGE) 
@@ -42,4 +57,4 @@ if (ENABLE_COVERAGE)
 endif()
 
 enable_testing()
-add_subdirectory("./test")
+add_subdirectory("test")
