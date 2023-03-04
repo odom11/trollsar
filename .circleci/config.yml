@@ -21,7 +21,7 @@ jobs:
                 command: |
                   mkdir build
                   cd build
-                  cmake .. -DCMAKE_CXX_COMPILER=g++-12 -DCMAKE_C_COMPILER=gcc-12 -G Ninja
+                  cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -G Ninja
                   cmake --build . --parallel
             - run:
                 name: run tests
