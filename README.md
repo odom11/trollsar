@@ -16,15 +16,11 @@ Uses ray tracing for SAR simulation. Runtime is reduced by utilizing the NVIDIA 
 
 ## Build
 
-### github actions
-
-![unit tests](https://github.com/wy-bbw/trollsar/workflows/test/badge.svg)
-
-
 ### CircleCI
 
 #### develop
 
+TODO: needs to be updated
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/wy-bbw/trollsar/tree/develop.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/wy-bbw/trollsar/tree/develop)
 
 #### master
