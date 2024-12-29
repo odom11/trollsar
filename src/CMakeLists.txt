@@ -6,7 +6,10 @@ set(CMAKE_AUTOUIC ON)
 
 
 qt_add_executable(trollsar_main)
-target_sources(trollsar_main PRIVATE main.cpp)
+target_sources(trollsar_main PRIVATE
+        main.cpp
+        optix/driver.cpp
+)
 target_link_libraries(trollsar_main PRIVATE Qt6::Quick)
 set_target_properties(trollsar_main PROPERTIES
     CXX_STANDARD 20

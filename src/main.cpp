@@ -5,19 +5,26 @@
 #include <iostream>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-//int simpleAdd(int a, int b);
+// int simpleAdd(int a, int b);
 #include <thread>
 
-int main(int argc, char *argv[]) {
-    std::jthread gui{
-        [argc, argv] () mutable {
-            QGuiApplication app(argc, argv);
-            QQmlApplicationEngine engine;
+#include "optix/driver.h"
 
-            const QUrl url(u"qrc:/trollsar/view/qml/MainWindow.qml"_qs);
+int main(int argc, char *argv[])
+{
+  trollsar::optix::initializeOptix();
+  std::jthread gui{[argc, argv]() mutable {
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
 
-            engine.load(url);
-            return app.exec();
-        }
-    };
+    const QUrl url(u"qrc:/trollsar/view/qml/MainWindow.qml"_qs);
+
+    engine.load(url);
+    return app.exec();
+  }};
+
+  // TODO initialize optix
+
+
+  std::cout << "hello world" << std::endl;
 }
