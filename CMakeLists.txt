@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.18)
 project(trollsar)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 
 
-set(OPTIX_VERSION "7.5")
+set(OPTIX_VERSION "8.1")
 # add optix to module path
 set(OptiX_INSTALL_DIR ${CMAKE_SOURCE_DIR}/external/optix/${OPTIX_VERSION}/)
 set(CMAKE_MODULE_PATH ${OptiX_INSTALL_DIR}/SDK/CMake)
@@ -26,18 +26,14 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/conan_files)
 
 execute_process(
     COMMAND ${CMAKE_COMMAND} -E env conan install ${CMAKE_SOURCE_DIR} --build=missing -s build_type=Debug -of ${CMAKE_BINARY_DIR}/conan_files
-        COMMAND_ECHO STDOUT
-        OUTPUT_FILE ${CMAKE_BINARY_DIR}/conan_install.log
-        ERROR_FILE ${CMAKE_BINARY_DIR}/conan_install_error.log
     COMMAND_ERROR_IS_FATAL ANY
-        OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 
 find_package(CUDA 11.0 REQUIRED)
 find_package(Catch2 REQUIRED HINTS ${CMAKE_BINARY_DIR}/conan_files)
 
-add_subdirectory(external/optix/7.5/SDK)
+add_subdirectory(external/optix/${OPTIX_VERSION}/SDK)
 add_subdirectory(src)
 
 
